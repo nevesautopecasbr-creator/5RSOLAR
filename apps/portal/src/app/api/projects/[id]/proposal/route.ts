@@ -2,14 +2,16 @@ import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { generateProposalPdfAndUpload } from "@/lib/pdf/generate-proposal";
 import { sendWhatsAppMessage } from "@/lib/whatsapp/send";
+import { createSigningRequest } from "@/lib/signature/create-signing";
 
 export const dynamic = "force-dynamic";
-export const maxDuration = 30;
+export const maxDuration = 60;
 
 /**
  * POST /api/projects/[id]/proposal
- * Gera PDF de proposta para o projeto e opcionalmente envia por WhatsApp.
- * Body: { sendWhatsApp?: boolean, phone?: string }
+ * Gera PDF de proposta e opcionalmente: envia WhatsApp, cria solicitacao de assinatura (Clicksign).
+ * Body: { sendWhatsApp?, phone?, createSigning?, clientSigner?: { name, email }, companySigner?: { name, email } }
+ * Se createSigning e nao enviar companySigner, usa COMPANY_SIGNER_EMAIL e COMPANY_SIGNER_NAME do env.
  */
 export async function POST(
   request: Request,
@@ -38,7 +40,13 @@ export async function POST(
       prazo: pricing.prazo,
     });
 
-    let body: { phone?: string; sendWhatsApp?: boolean } = {};
+    let body: {
+      phone?: string;
+      sendWhatsApp?: boolean;
+      createSigning?: boolean;
+      clientSigner?: { name: string; email: string };
+      companySigner?: { name: string; email: string };
+    } = {};
     try {
       body = await request.json();
     } catch {
@@ -61,10 +69,38 @@ export async function POST(
       }
     }
 
+    let signingUrl: string | null = null;
+    if (
+      body.createSigning &&
+      process.env.CLICKSIGN_ACCESS_TOKEN &&
+      body.clientSigner?.email
+    ) {
+      const companyName =
+        body.companySigner?.name ?? process.env.COMPANY_SIGNER_NAME;
+      const companyEmail =
+        body.companySigner?.email ?? process.env.COMPANY_SIGNER_EMAIL;
+      if (companyName && companyEmail) {
+        try {
+          const signing = await createSigningRequest(supabase, {
+            documentId: result.documentId,
+            projectId: project.id,
+            documentName: project.name,
+            pdfUrl: result.url,
+            clientSigner: body.clientSigner,
+            companySigner: { name: companyName, email: companyEmail },
+          });
+          signingUrl = signing.signingUrl;
+        } catch (e) {
+          console.error("Clicksign create signing failed", e);
+        }
+      }
+    }
+
     return NextResponse.json({
       url: result.url,
       documentId: result.documentId,
       whatsappSent: !!body.sendWhatsApp && !!body.phone,
+      signingUrl,
     });
   } catch (e) {
     console.error("Proposal generation failed", e);

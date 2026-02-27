@@ -21,16 +21,17 @@ Estes arquivos criam o schema do banco (tabelas, enums, índices e FKs) compatí
 | 13    | `13-documents-module03.sql`                 | Módulo 03: tabela Document (proposta, contrato, fatura)                             |
 | 14    | `14-solar-units-module04.sql`               | Módulo 04: tabela SolarUnit (Unidade Consumidora / UC)                              |
 | 15    | `15-rls-projects-documents-solar-units.sql` | RLS: usuários veem apenas projetos das suas empresas                                |
+| 16    | `16-signing-request.sql`                    | Tabela SigningRequest (Clicksign/DocuSign) + RLS                                    |
 
 ## Como rodar no Supabase
 
 1. Abra o projeto no [Supabase Dashboard](https://supabase.com/dashboard).
 2. Vá em **SQL Editor** → **New query**.
 3. Copie o conteúdo de `01-init.sql`, cole na query e clique em **Run**.
-4. Repita para `02-refresh-tokens.sql`, depois `03-project-budget.sql`, e assim por diante até `15-rls-projects-documents-solar-units.sql`.
+4. Repita para `02-refresh-tokens.sql`, depois `03-project-budget.sql`, e assim por diante até `16-signing-request.sql`.
 
 **Importante:** use um banco **vazio** (projeto novo) ou um banco onde esse schema ainda não foi aplicado. Se já tiver rodado `prisma migrate deploy`, não precisa rodar estes scripts.
 
 ## Opção: script único
 
-O arquivo **`00-schema-completo.sql`** contém todo o schema na ordem correta (equivalente a rodar 01 a 11 em sequência). Cole no SQL Editor do Supabase e execute **uma vez** em um banco vazio. **As migrações 12 a 15 (5R backlog, Document, SolarUnit, RLS)** devem ser aplicadas em seguida, nessa ordem.
+O arquivo **`00-schema-completo.sql`** contém todo o schema na ordem correta (equivalente a rodar 01 a 11 em sequência). Cole no SQL Editor do Supabase e execute **uma vez** em um banco vazio. **As migrações 12 a 16 (5R backlog, Document, SolarUnit, RLS, SigningRequest)** devem ser aplicadas em seguida, nessa ordem.

@@ -3,6 +3,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { createProjectFromMondayLead } from "@/lib/monday/parse-payload";
 import { generateProposalPdfAndUpload } from "@/lib/pdf/generate-proposal";
 import { sendWhatsAppMessage } from "@/lib/whatsapp/send";
+import { createSigningRequest } from "@/lib/signature/create-signing";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -138,12 +139,43 @@ export async function POST(request: Request) {
       }
     }
 
+    let signingUrl: string | null = null;
+    if (
+      pdfUrl &&
+      documentId &&
+      process.env.CLICKSIGN_ACCESS_TOKEN &&
+      projectData.email &&
+      process.env.COMPANY_SIGNER_EMAIL &&
+      process.env.COMPANY_SIGNER_NAME
+    ) {
+      try {
+        const signing = await createSigningRequest(supabase, {
+          documentId,
+          projectId: project.id,
+          documentName: project.name,
+          pdfUrl,
+          clientSigner: {
+            name: project.name || "Cliente",
+            email: projectData.email,
+          },
+          companySigner: {
+            name: process.env.COMPANY_SIGNER_NAME,
+            email: process.env.COMPANY_SIGNER_EMAIL,
+          },
+        });
+        signingUrl = signing.signingUrl;
+      } catch (e) {
+        console.error("Monday webhook: Clicksign signing request failed", e);
+      }
+    }
+
     return NextResponse.json({
       received: true,
       projectId: project.id,
       documentId,
       pdfUrl,
       whatsappSent: !!phone && !!pdfUrl,
+      signingUrl,
     });
   } catch (e) {
     console.error("Monday webhook error", e);
