@@ -2,7 +2,7 @@ import { ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
-import * as cookieParser from "cookie-parser";
+import cookieParser from "cookie-parser";
 import { join } from "node:path";
 import { AppModule } from "./app.module";
 
@@ -37,9 +37,12 @@ async function bootstrap() {
     credentials: true,
   });
   app.use(cookieParser());
-  app.useStaticAssets(join(process.cwd(), process.env.STORAGE_LOCAL_DIR ?? "uploads"), {
-    prefix: "/uploads",
-  });
+  app.useStaticAssets(
+    join(process.cwd(), process.env.STORAGE_LOCAL_DIR ?? "uploads"),
+    {
+      prefix: "/uploads",
+    },
+  );
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
