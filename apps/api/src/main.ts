@@ -32,6 +32,10 @@ async function bootstrap() {
       if (allowedOrigins.has(origin)) {
         return callback(null, true);
       }
+      // Permitir deployments Vercel (produção e preview: *.vercel.app)
+      if (origin.endsWith(".vercel.app")) {
+        return callback(null, true);
+      }
       return callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
