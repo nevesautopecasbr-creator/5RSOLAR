@@ -20,11 +20,12 @@
 Se a API estiver em um projeto Vercel separado (ex.: 5-rsolar-api.vercel.app):
 
 1. **Root Directory:** Defina como **apps/api**.
-2. **Build Command:** `pnpm run build` (gera `dist/` e o handler em `api/` usa `dist/src/app-factory.js`).
-3. **Output:** a pasta `api/` contém o handler serverless que recebe **todos os métodos** (GET, POST, etc.) e encaminha ao NestJS. O `vercel.json` reescreve todas as rotas para `/api`.
-4. **Variáveis:** configure `DATABASE_URL`, `JWT_SECRET`, `JWT_REFRESH_SECRET`, `WEB_ORIGIN` (ou use \*.vercel.app já permitido em CORS).
+2. **Build Command:** `pnpm run build`.
+3. **Handler:** O `src/main.ts` exporta um **default handler** para a Vercel; a plataforma usa esse export e encaminha GET/POST/etc. ao NestJS. Em local, o app usa `listen()` normalmente.
+4. **URL no frontend:** No projeto **web**, defina `NEXT_PUBLIC_API_URL` = `https://5-rsolar-api.vercel.app/api` (com `/api`).
+5. **Variáveis da API:** `DATABASE_URL`, `JWT_SECRET`, `JWT_REFRESH_SECRET`; CORS já permite `*.vercel.app`.
 
-Assim, `/auth/login` e `/auth/refresh` (POST) passam a responder corretamente (evita 405).
+Se ainda der 405, faça redeploy completo da API após o push e confira os logs (Functions / Runtime Logs) no dashboard.
 
 ## Se a função serverless ainda falhar
 
