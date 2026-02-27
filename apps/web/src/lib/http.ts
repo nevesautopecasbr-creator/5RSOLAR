@@ -1,7 +1,10 @@
 import { AuthPayload } from "./types";
 
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "") ?? "http://localhost:3001/api";
+const raw =
+  process.env.NEXT_PUBLIC_API_URL?.trim() ?? "http://localhost:3001/api";
+const API_BASE_URL = raw.replace(/\/$/, "").endsWith("/api")
+  ? raw.replace(/\/$/, "")
+  : `${raw.replace(/\/$/, "")}/api`;
 
 const COMPANY_ID = process.env.NEXT_PUBLIC_COMPANY_ID?.trim();
 

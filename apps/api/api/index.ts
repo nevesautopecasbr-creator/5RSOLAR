@@ -20,5 +20,12 @@ export default async function handler(
     await app.init();
     expressHandler = app.getHttpAdapter().getInstance();
   }
+  // Garantir que o path tenha o prefixo /api (NestJS usa setGlobalPrefix('api'))
+  const [pathPart, queryPart] = (req.url ?? "/").split("?");
+  if (!pathPart.startsWith("/api")) {
+    const newPath =
+      "/api" + (pathPart.startsWith("/") ? pathPart : "/" + pathPart);
+    req.url = queryPart ? `${newPath}?${queryPart}` : newPath;
+  }
   expressHandler(req, res);
 }
