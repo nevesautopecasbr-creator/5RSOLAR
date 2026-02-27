@@ -1,11 +1,11 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ApiError } from "@/lib/http";
 import { useAuth } from "@/components/auth/auth-provider";
 
-export default function LoginPage() {
+function LoginForm() {
   const { login, user, isLoading } = useAuth();
   const router = useRouter();
   const params = useSearchParams();
@@ -64,10 +64,30 @@ export default function LoginPage() {
           />
         </div>
         {error ? <p className="error-text">{error}</p> : null}
-        <button className="button button-primary" type="submit" disabled={isSubmitting}>
+        <button
+          className="button button-primary"
+          type="submit"
+          disabled={isSubmitting}
+        >
           {isSubmitting ? "Entrando..." : "Entrar"}
         </button>
       </form>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="login-shell">
+          <div className="login-card">
+            <p>Carregando...</p>
+          </div>
+        </div>
+      }
+    >
+      <LoginForm />
+    </Suspense>
   );
 }
