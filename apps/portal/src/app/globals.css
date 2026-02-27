@@ -140,3 +140,68 @@ a {
   color: var(--primary);
   font-weight: 600;
 }
+
+/* 5R Energia Solar — identidade (laranja + escuro) */
+.theme-5r {
+  --5r-orange: #e85d04;
+  --5r-orange-hover: #f48c06;
+  --5r-orange-soft: rgba(232, 93, 4, 0.12);
+  --5r-dark: #1a1a1a;
+  --5r-dark-surface: #252525;
+  --5r-dark-border: #3a3a3a;
+  --5r-text: #f8f9fa;
+  --5r-text-soft: #adb5bd;
+}
+
+.lead-form-card {
+  background: var(--5r-dark-surface);
+  border: 1px solid var(--5r-dark-border);
+  border-radius: 12px;
+  padding: 32px;
+  max-width: 560px;
+}
+
+.lead-form-card h1 {
+  color: var(--5r-text);
+  margin: 0 0 8px;
+  font-size: 1.5rem;
+}
+
+.lead-form-card .subtitle {
+  color: var(--5r-text-soft);
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+.lead-form-card .form-group label {
+  color: var(--5r-text-soft);
+}
+
+.lead-form-card .input {
+  background: var(--5r-dark);
+  border-color: var(--5r-dark-border);
+  color: var(--5r-text);
+}
+
+.lead-form-card .input::placeholder {
+  color: var(--5r-text-soft);
+  opacity: 0.8;
+}
+
+.lead-form-card .input:focus {
+  border-color: var(--5r-orange);
+  box-shadow: 0 0 0 2px var(--5r-orange-soft);
+}
+
+.lead-form-card .button-primary {
+  background: var(--5r-orange);
+}
+
+.lead-form-card .button-primary:hover:not(:disabled) {
+  background: var(--5r-orange-hover);
+}
+
+.lead-form-card textarea.input {
+  min-height: 100px;
+  resize: vertical;
+}
