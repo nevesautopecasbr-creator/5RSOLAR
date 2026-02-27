@@ -1,0 +1,56 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
+import type { User } from "@supabase/supabase-js";
+
+export function DashboardShell({
+  user,
+  children,
+}: {
+  user: User;
+  children: React.ReactNode;
+}) {
+  const pathname = usePathname();
+  const router = useRouter();
+
+  async function handleLogout() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push("/login");
+    router.refresh();
+  }
+
+  return (
+    <div className="layout-root">
+      <aside className="sidebar">
+        <div className="sidebar-title">ERP Solar</div>
+        <nav className="nav-list">
+          <Link
+            href="/dashboard"
+            className={`nav-item ${pathname === "/dashboard" ? "active" : ""}`}
+          >
+            Dashboard
+          </Link>
+        </nav>
+        <div style={{ marginTop: "auto", paddingTop: 24 }}>
+          <p
+            style={{ fontSize: 14, color: "var(--text-soft)", marginBottom: 8 }}
+          >
+            {user.email}
+          </p>
+          <button
+            type="button"
+            className="button"
+            onClick={handleLogout}
+            style={{ background: "transparent", color: "var(--text-soft)" }}
+          >
+            Sair
+          </button>
+        </div>
+      </aside>
+      <main style={{ padding: 24, overflow: "auto" }}>{children}</main>
+    </div>
+  );
+}

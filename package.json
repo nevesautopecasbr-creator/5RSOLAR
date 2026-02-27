@@ -6,6 +6,8 @@
     "dev": "pnpm -r dev",
     "dev:api": "pnpm --filter @erp/api dev",
     "dev:web": "pnpm --filter @erp/web dev",
+    "dev:portal": "pnpm --filter @erp/portal dev",
+    "build:portal": "pnpm --filter @erp/portal build",
     "build": "pnpm -r build",
     "lint": "pnpm -r lint",
     "format": "pnpm -r format",
