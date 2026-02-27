@@ -40,6 +40,12 @@ export function DashboardShell({
             Leads
           </Link>
           <Link
+            href="/dashboard/projects"
+            className={`nav-item ${pathname?.startsWith("/dashboard/projects") ? "active" : ""}`}
+          >
+            Projetos
+          </Link>
+          <Link
             href="/dashboard/documents"
             className={`nav-item ${pathname?.startsWith("/dashboard/documents") ? "active" : ""}`}
           >
