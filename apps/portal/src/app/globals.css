@@ -1,3 +1,14 @@
+@import "tailwindcss";
+
+@theme {
+  --color-5r-orange: #e85d04;
+  --color-5r-orange-hover: #f48c06;
+  --color-5r-dark: #1a1a1a;
+  --color-5r-dark-surface: #252525;
+  --color-5r-dark-border: #3a3a3a;
+  --color-5r-orange-soft: rgba(232, 93, 4, 0.12);
+}
+
 :root {
   --bg: #f5f7fb;
   --surface: #ffffff;

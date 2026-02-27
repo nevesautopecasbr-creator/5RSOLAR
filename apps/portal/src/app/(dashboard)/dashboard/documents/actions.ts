@@ -90,3 +90,41 @@ export async function uploadProjectDocument(
 
   return { documentId, version };
 }
+
+export type DocumentCategoryType = DocumentCategory;
+
+export interface DocumentRow {
+  id: string;
+  projectId: string;
+  name: string;
+  storagePath: string | null;
+  category: DocumentCategoryType;
+  version: number;
+  url: string | null;
+  createdAt: string;
+}
+
+/**
+ * Lista documentos do projeto, opcionalmente filtrados por categoria.
+ */
+export async function listProjectDocuments(
+  projectId: string,
+  category?: DocumentCategoryType,
+): Promise<{ data: DocumentRow[]; error?: string }> {
+  const supabase = await createClient();
+  let query = supabase
+    .from("Document")
+    .select(
+      "id, projectId, name, storagePath, category, version, url, createdAt",
+    )
+    .eq("projectId", projectId)
+    .order("createdAt", { ascending: false });
+
+  if (category) {
+    query = query.eq("category", category);
+  }
+
+  const { data, error } = await query;
+  if (error) return { data: [], error: error.message };
+  return { data: (data ?? []) as DocumentRow[] };
+}

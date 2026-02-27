@@ -39,6 +39,12 @@ export function DashboardShell({
           >
             Leads
           </Link>
+          <Link
+            href="/dashboard/documents"
+            className={`nav-item ${pathname?.startsWith("/dashboard/documents") ? "active" : ""}`}
+          >
+            Documentos
+          </Link>
         </nav>
         <div style={{ marginTop: "auto", paddingTop: 24 }}>
           <p
