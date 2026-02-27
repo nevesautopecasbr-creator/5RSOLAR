@@ -77,7 +77,7 @@ export async function onSigningComplete(
 
   await supabase
     .from("Document")
-    .update({ url: newUrl, type: "contrato", updatedAt: now })
+    .update({ url: newUrl, category: "Contrato", updatedAt: now })
     .eq("id", documentId);
 
   await supabase

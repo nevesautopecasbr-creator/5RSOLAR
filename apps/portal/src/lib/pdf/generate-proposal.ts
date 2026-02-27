@@ -93,7 +93,8 @@ export async function generateProposalPdfAndUpload(
     projectId: data.projectId,
     name: `Proposta - ${data.projectName}`,
     url,
-    type: "proposta",
+    storagePath: path,
+    category: "Proposta",
     version: 1,
     updatedAt: new Date().toISOString(),
   });
