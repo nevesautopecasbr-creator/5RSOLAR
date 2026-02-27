@@ -26,31 +26,41 @@ export function DashboardShell({
     <div className="layout-root">
       <aside className="sidebar">
         <div className="sidebar-title">ERP Solar</div>
-        <nav className="nav-list">
-          <Link
-            href="/dashboard"
-            className={`nav-item ${pathname === "/dashboard" ? "active" : ""}`}
-          >
-            Dashboard
-          </Link>
-          <Link
-            href="/dashboard/leads"
-            className={`nav-item ${pathname?.startsWith("/dashboard/leads") ? "active" : ""}`}
-          >
-            Leads
-          </Link>
-          <Link
-            href="/dashboard/projects"
-            className={`nav-item ${pathname?.startsWith("/dashboard/projects") ? "active" : ""}`}
-          >
-            Projetos
-          </Link>
-          <Link
-            href="/dashboard/documents"
-            className={`nav-item ${pathname?.startsWith("/dashboard/documents") ? "active" : ""}`}
-          >
-            Documentos
-          </Link>
+        <nav className="nav-list" aria-label="Menu principal">
+          <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
+            <li>
+              <Link
+                href="/dashboard"
+                className={`nav-item ${pathname === "/dashboard" ? "active" : ""}`}
+              >
+                Dashboard
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/dashboard/leads"
+                className={`nav-item ${pathname?.startsWith("/dashboard/leads") ? "active" : ""}`}
+              >
+                Leads
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/dashboard/projects"
+                className={`nav-item ${pathname?.startsWith("/dashboard/projects") ? "active" : ""}`}
+              >
+                Projetos
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/dashboard/documents"
+                className={`nav-item ${pathname?.startsWith("/dashboard/documents") ? "active" : ""}`}
+              >
+                Documentos
+              </Link>
+            </li>
+          </ul>
         </nav>
         <div style={{ marginTop: "auto", paddingTop: 24 }}>
           <p
