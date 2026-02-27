@@ -1,82 +1,40 @@
-# Checklist tecnico de implantacao
+# Checklist técnico de implantação (portal)
+
+O projeto atual é apenas **apps/portal** (Next.js + Supabase Auth). Não há API separada.
 
 ## Ambientes
 
 - `dev`: desenvolvimento local.
-- `staging`: homologacao com dados mascarados.
-- `prod`: producao.
+- `staging`: homologação (preview na Vercel).
+- `prod`: produção.
 
 ## 1) Banco (Supabase)
 
 - [ ] Projeto Supabase criado.
-- [ ] Regiao definida proxima dos usuarios.
-- [ ] `DATABASE_URL` (pooler) gerada para API.
-- [ ] `DIRECT_URL` (opcional para migrate) configurada.
-- [ ] Politica de backup/retencao confirmada.
-- [ ] Alertas de uso e conexoes habilitados.
+- [ ] Região definida próxima dos usuários.
+- [ ] Tabelas criadas (SQL em `docs/supabase/sql/` — ver README da pasta).
+- [ ] Política de backup/retenção confirmada.
+- [ ] Authentication → Providers: Email ativado.
 
-## 2) Redis (BullMQ)
+## 2) Portal (`apps/portal`) na Vercel
 
-- [ ] Instancia Redis gerenciada criada (Upstash/Redis Cloud).
-- [ ] `REDIS_URL` configurada em todos os ambientes.
-- [ ] TTL e limites de memoria revisados.
-- [ ] Estrategia de retry/dead-letter definida.
+- [ ] Projeto Vercel criado e conectado ao repositório.
+- [ ] **Root Directory** = `apps/portal` (obrigatório).
+- [ ] Variáveis de ambiente:
+  - [ ] `NEXT_PUBLIC_SUPABASE_URL`
+  - [ ] `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- [ ] Build do portal executa sem erro.
+- [ ] Rotas protegidas (ex.: `/dashboard`) validando sessão Supabase.
 
-## 3) API (`apps/api`)
+## 3) Segurança
 
-- [ ] Host definido (preferencia: processo persistente para worker).
-- [ ] Variaveis obrigatorias configuradas:
-  - [ ] `NODE_ENV`
-  - [ ] `PORT`
-  - [ ] `DATABASE_URL`
-  - [ ] `REDIS_URL`
-  - [ ] `JWT_SECRET`
-  - [ ] `JWT_REFRESH_SECRET`
-  - [ ] `JWT_ACCESS_MINUTES`
-  - [ ] `JWT_REFRESH_DAYS`
-  - [ ] `WEB_ORIGIN`
-  - [ ] `WEB_ORIGINS`
-- [ ] Build da API executa sem erro.
-- [ ] Migrations aplicadas no banco alvo.
-- [ ] Seed executada apenas quando necessario.
-- [ ] Swagger acessivel no ambiente esperado.
-- [ ] Healthcheck funcional.
+- [ ] Segredos apenas nas variáveis da Vercel (nunca no repo).
+- [ ] Cookies/headers de auth em HTTPS.
 
-## 4) Web (`apps/web`) na Vercel
+## 4) Go-live
 
-- [ ] Projeto Vercel criado e conectado ao repo.
-- [ ] Branch de `staging` com preview deployments.
-- [ ] Variaveis obrigatorias configuradas:
-  - [ ] `NEXT_PUBLIC_API_URL`
-  - [ ] Outras variaveis publicas e privadas da web
-- [ ] Build da web executa sem erro.
-- [ ] Rotas protegidas validando sessao/permissoes.
+- [ ] Login e logout funcionando.
+- [ ] Acesso ao dashboard após login.
+- [ ] Plano de rollback e backup validado.
 
-## 5) CORS e seguranca
-
-- [ ] `WEB_ORIGIN` e `WEB_ORIGINS` alinhados com dominios Vercel.
-- [ ] Cookies/headers de auth validados em HTTPS.
-- [ ] Segredos em cofre da plataforma (sem commit no repo).
-- [ ] Rotacao de segredo planejada (`JWT_SECRET`).
-
-## 6) Observabilidade
-
-- [ ] Logging centralizado (API e web).
-- [ ] Erros de runtime monitorados (Sentry ou equivalente).
-- [ ] Dashboard minimo com taxa de erro e latencia.
-- [ ] Alertas para falha de integracao e filas.
-
-## 7) Testes de aceite (go-live)
-
-- [ ] Login e autorizacao por perfil.
-- [ ] Fluxo de precificacao (`/api/pricing/...`).
-- [ ] Relatorios financeiros (`cashflow`, `dre`, `margin`).
-- [ ] Fluxo de proposta e assinatura (quando ativo).
-- [ ] Upload e acesso de documentos (quando ativo).
-
-## 8) Rollback
-
-- [ ] Plano de rollback documentado.
-- [ ] Backup recente validado antes do deploy.
-- [ ] Procedimento de rollback testado em staging.
-
+Ver também: `docs/vercel-deploy.md`, `docs/portal-nextjs-supabase.md`.

@@ -1,5 +1,7 @@
 # Roadmap de entrega (Supabase + Vercel)
 
+**Nota:** Este roadmap descreveu a arquitetura anterior (apps/web + apps/api). O projeto atual é **apenas apps/portal** (Next.js + Supabase Auth), sem API separada. O conteúdo abaixo permanece como referência histórica.
+
 ## Premissas
 
 - Banco de dados: **Supabase Postgres**.
@@ -177,4 +179,3 @@
 - [ ] CORS validado para domínio final.
 - [ ] Fluxo de login, pricing, DRE e proposta testados ponta a ponta.
 - [ ] Plano de rollback e restore documentado.
-

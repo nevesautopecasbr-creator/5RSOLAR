@@ -1,6 +1,6 @@
 # Configuração do Supabase (banco e tabelas)
 
-Este guia descreve como criar o projeto no Supabase, obter a URL de conexão e aplicar as migrations do Prisma para criar/atualizar as tabelas.
+Este guia descreve como criar o projeto no Supabase e preparar o banco. **Para o portal (apps/portal):** use as variáveis `NEXT_PUBLIC_SUPABASE_URL` e `NEXT_PUBLIC_SUPABASE_ANON_KEY` e crie as tabelas executando os SQL em `docs/supabase/sql/` (ver README da pasta). As seções abaixo sobre Prisma, `migrate:deploy` e `seed` referem-se à API antiga (apps/api), já removida; podem ser ignoradas se você usar apenas o portal.
 
 ---
 
