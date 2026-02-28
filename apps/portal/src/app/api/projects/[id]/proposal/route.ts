@@ -55,6 +55,8 @@ export async function POST(
       // no body
     }
 
+    let signingUrl: string | null = null;
+
     if (body.sendEmail && body.email) {
       try {
         await sendProposalEmail(body.email, project.name, result.url);
@@ -88,7 +90,6 @@ export async function POST(
       }
     }
 
-    let signingUrl: string | null = null;
     if (
       body.createSigning &&
       process.env.CLICKSIGN_ACCESS_TOKEN &&
