@@ -55,7 +55,7 @@ export async function createSigningRequest(
   });
 
   await addSigner(envelopeId, input.clientSigner, 1);
-  await addSigner(envelopeId, input.companySigner, 1);
+  await addSigner(envelopeId, input.companySigner, 2);
   await activateEnvelope(envelopeId);
 
   const signingRequestId = randomUUID();
@@ -76,6 +76,11 @@ export async function createSigningRequest(
   if (error) {
     throw new Error(`SigningRequest insert failed: ${error.message}`);
   }
+
+  await supabase
+    .from("Project")
+    .update({ pipelineStatus: "proposta", updatedAt: now })
+    .eq("id", input.projectId);
 
   return {
     signingRequestId,
