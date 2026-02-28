@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { generateProposalPdfAndUpload } from "@/lib/pdf/generate-proposal";
 import { sendWhatsAppMessage } from "@/lib/whatsapp/send";
+import { sendProposalEmail } from "@/lib/email/send";
 import { createSigningRequest } from "@/lib/signature/create-signing";
 
 export const dynamic = "force-dynamic";
@@ -9,9 +10,8 @@ export const maxDuration = 60;
 
 /**
  * POST /api/projects/[id]/proposal
- * Gera PDF de proposta e opcionalmente: envia WhatsApp, cria solicitacao de assinatura (Clicksign).
- * Body: { sendWhatsApp?, phone?, createSigning?, clientSigner?: { name, email }, companySigner?: { name, email } }
- * Se createSigning e nao enviar companySigner, usa COMPANY_SIGNER_EMAIL e COMPANY_SIGNER_NAME do env.
+ * Gera PDF de proposta e opcionalmente: envia e-mail, WhatsApp, cria solicitacao de assinatura (Clicksign).
+ * Body: { sendEmail?, email?, sendWhatsApp?, phone?, createSigning?, clientSigner?, companySigner? }
  */
 export async function POST(
   request: Request,
@@ -41,6 +41,8 @@ export async function POST(
     });
 
     let body: {
+      email?: string;
+      sendEmail?: boolean;
       phone?: string;
       sendWhatsApp?: boolean;
       createSigning?: boolean;
@@ -51,6 +53,20 @@ export async function POST(
       body = await request.json();
     } catch {
       // no body
+    }
+
+    if (body.sendEmail && body.email) {
+      try {
+        await sendProposalEmail(body.email, project.name, result.url);
+      } catch (e) {
+        console.error("Proposal email send failed", e);
+        return NextResponse.json({
+          url: result.url,
+          documentId: result.documentId,
+          emailSent: false,
+          emailError: "Send failed",
+        });
+      }
     }
 
     if (body.sendWhatsApp && body.phone) {
@@ -64,7 +80,10 @@ export async function POST(
         return NextResponse.json({
           url: result.url,
           documentId: result.documentId,
+          emailSent: !!body.sendEmail && !!body.email,
+          whatsappSent: false,
           whatsappError: "Send failed",
+          signingUrl,
         });
       }
     }
@@ -99,6 +118,7 @@ export async function POST(
     return NextResponse.json({
       url: result.url,
       documentId: result.documentId,
+      emailSent: !!body.sendEmail && !!body.email,
       whatsappSent: !!body.sendWhatsApp && !!body.phone,
       signingUrl,
     });

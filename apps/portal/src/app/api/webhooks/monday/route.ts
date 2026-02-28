@@ -3,6 +3,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { createProjectFromMondayLead } from "@/lib/monday/parse-payload";
 import { generateProposalPdfAndUpload } from "@/lib/pdf/generate-proposal";
 import { sendWhatsAppMessage } from "@/lib/whatsapp/send";
+import { sendProposalEmail } from "@/lib/email/send";
 import { createSigningRequest } from "@/lib/signature/create-signing";
 
 export const dynamic = "force-dynamic";
@@ -136,6 +137,14 @@ export async function POST(request: Request) {
         );
       } catch (e) {
         console.error("Monday webhook: WhatsApp send failed", e);
+      }
+    }
+
+    if (projectData.email && pdfUrl) {
+      try {
+        await sendProposalEmail(projectData.email, project.name, pdfUrl);
+      } catch (e) {
+        console.error("Monday webhook: Email send failed", e);
       }
     }
 

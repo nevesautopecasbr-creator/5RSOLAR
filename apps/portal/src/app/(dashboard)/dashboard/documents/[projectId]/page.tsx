@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { listProjectDocuments } from "../actions";
 import { DocumentManager } from "@/components/document-manager/document-manager";
 import { SignatureProgressSteps } from "@/components/signature-progress-steps";
+import { GenerateProposalForm } from "@/components/generate-proposal-form";
 
 export default async function DocumentManagerPage({
   params,
@@ -43,6 +44,7 @@ export default async function DocumentManagerPage({
           ← Voltar para projetos
         </Link>
       </p>
+      <GenerateProposalForm projectId={project.id} projectName={project.name} />
       <SignatureProgressSteps
         pipelineStatus={project.pipelineStatus ?? null}
         signingStatus={

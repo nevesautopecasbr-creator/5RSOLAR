@@ -71,9 +71,11 @@ export function generateProposalPdf(
     }
   } else {
     doc.setFontSize(22);
-    doc.text("Proposta Comercial - Energia Solar", pageWidth / 2, y, {
+    doc.setTextColor(232, 93, 4);
+    doc.text("Proposta Comercial - 5R Energia Solar", pageWidth / 2, y, {
       align: "center",
     });
+    doc.setTextColor(0, 0, 0);
     y += 20;
     doc.setFontSize(12);
     doc.text(`Projeto: ${data.projectName}`, MARGIN, y);
