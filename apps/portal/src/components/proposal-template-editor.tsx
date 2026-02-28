@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { PROPOSAL_TEMPLATE_VARIABLES } from "@/app/(dashboard)/dashboard/settings/templates/actions";
+import { PROPOSAL_TEMPLATE_VARIABLES } from "@/app/(dashboard)/dashboard/settings/templates/proposal-template-variables";
 
 interface ProposalTemplateEditorProps {
   initialContent: string;
