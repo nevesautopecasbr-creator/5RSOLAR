@@ -4,6 +4,7 @@ import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import {
   getDocumentFolderTree,
+  CATEGORY_ICONS,
   type FolderItem,
 } from "@/app/(dashboard)/dashboard/documents/[projectId]/document-categories";
 import {
@@ -20,6 +21,30 @@ const ACCEPT = {
     ".docx",
   ],
 };
+
+const IMAGE_EXT = new Set(["png", "jpg", "jpeg", "gif", "webp"]);
+
+function getExtension(doc: DocumentRow): string | null {
+  if (doc.storagePath) {
+    const m = doc.storagePath.match(/\.([a-z0-9]+)$/i);
+    return m ? m[1].toLowerCase() : null;
+  }
+  if (doc.url) {
+    try {
+      const path = new URL(doc.url).pathname;
+      const m = path.match(/\.([a-z0-9]+)$/i);
+      return m ? m[1].toLowerCase() : null;
+    } catch {
+      return null;
+    }
+  }
+  return null;
+}
+
+function isInlineViewable(doc: DocumentRow): boolean {
+  const ext = getExtension(doc);
+  return ext === "pdf" || (ext !== null && IMAGE_EXT.has(ext));
+}
 
 interface DocumentManagerProps {
   projectId: string;
@@ -38,6 +63,10 @@ export function DocumentManager({
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [preview, setPreview] = useState<{
+    url: string;
+    type: "pdf" | "image";
+  } | null>(null);
 
   const refreshDocuments = useCallback(
     async (category?: DocumentCategoryType) => {
@@ -117,12 +146,17 @@ export function DocumentManager({
                   key={item.id}
                   type="button"
                   onClick={() => onSelectFolder(item)}
-                  className={`block w-full rounded-lg px-3 py-2 text-left text-sm transition ${
+                  className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm transition ${
                     selectedCategory === item.category
                       ? "bg-5r-orange/20 text-5r-orange"
                       : "text-zinc-300 hover:bg-white/5 hover:text-white"
                   }`}
                 >
+                  {item.category && (
+                    <span className="text-base" aria-hidden>
+                      {CATEGORY_ICONS[item.category]}
+                    </span>
+                  )}
                   {item.label}
                 </button>
               ))}
@@ -166,9 +200,13 @@ export function DocumentManager({
             )}
 
             <div className="flex-1 overflow-auto">
-              <h3 className="mb-2 text-sm font-medium text-zinc-400">
+              <h3 className="mb-1 text-sm font-medium text-zinc-400">
                 Documentos nesta pasta
               </h3>
+              <p className="mb-2 text-xs text-zinc-500">
+                O sistema mantém histórico de versões: ao enviar um arquivo com
+                o mesmo nome, uma nova versão é criada.
+              </p>
               {loading ? (
                 <p className="text-sm text-zinc-500">Carregando...</p>
               ) : documents.length === 0 ? (
@@ -177,33 +215,60 @@ export function DocumentManager({
                 </p>
               ) : (
                 <ul className="space-y-2">
-                  {documents.map((doc) => (
-                    <li
-                      key={doc.id}
-                      className="flex items-center justify-between rounded-lg border border-5r-dark-border bg-5r-dark px-4 py-3"
-                    >
-                      <div className="min-w-0 flex-1">
-                        <p className="truncate font-medium text-white">
-                          {doc.name}
-                        </p>
-                        <p className="text-xs text-zinc-500">
-                          v{doc.version}
-                          {doc.createdAt &&
-                            ` · ${new Date(doc.createdAt).toLocaleDateString("pt-BR")}`}
-                        </p>
-                      </div>
-                      {doc.url && (
-                        <a
-                          href={doc.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="ml-3 shrink-0 rounded bg-5r-orange px-3 py-1.5 text-sm font-medium text-white hover:bg-5r-orange-hover"
+                  {documents.map((doc) => {
+                    const viewable = doc.url && isInlineViewable(doc);
+                    const ext = getExtension(doc);
+                    const previewType = ext === "pdf" ? "pdf" : "image";
+                    return (
+                      <li
+                        key={doc.id}
+                        className="flex items-center justify-between gap-3 rounded-lg border border-5r-dark-border bg-5r-dark px-4 py-3"
+                      >
+                        <span
+                          className="shrink-0 text-xl text-5r-orange"
+                          aria-hidden
                         >
-                          Abrir
-                        </a>
-                      )}
-                    </li>
-                  ))}
+                          {CATEGORY_ICONS[doc.category]}
+                        </span>
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate font-medium text-white">
+                            {doc.name}
+                          </p>
+                          <p className="text-xs text-zinc-500">
+                            v{doc.version}
+                            {doc.createdAt &&
+                              ` · ${new Date(doc.createdAt).toLocaleDateString("pt-BR")}`}
+                          </p>
+                        </div>
+                        {doc.url && (
+                          <div className="flex shrink-0 gap-2">
+                            {viewable && (
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setPreview({
+                                    url: doc.url!,
+                                    type: previewType,
+                                  })
+                                }
+                                className="rounded border border-5r-dark-border bg-5r-dark-surface px-3 py-1.5 text-sm font-medium text-white hover:border-5r-orange/50 hover:bg-5r-orange/10"
+                              >
+                                Visualizar
+                              </button>
+                            )}
+                            <a
+                              href={doc.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="rounded bg-5r-orange px-3 py-1.5 text-sm font-medium text-white hover:bg-5r-orange-hover"
+                            >
+                              Abrir
+                            </a>
+                          </div>
+                        )}
+                      </li>
+                    );
+                  })}
                 </ul>
               )}
             </div>
@@ -217,6 +282,42 @@ export function DocumentManager({
           </div>
         )}
       </main>
+
+      {/* Modal: visualização inline de PDF e imagens (sem forçar download) */}
+      {preview && (
+        <div
+          className="fixed inset-0 z-50 flex flex-col bg-black/90"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Visualizar documento"
+        >
+          <div className="flex shrink-0 items-center justify-between border-b border-5r-dark-border bg-5r-dark px-4 py-2">
+            <p className="text-sm text-zinc-400">Visualização inline</p>
+            <button
+              type="button"
+              onClick={() => setPreview(null)}
+              className="rounded bg-5r-dark-surface px-3 py-1.5 text-sm font-medium text-white hover:bg-5r-orange"
+            >
+              Fechar
+            </button>
+          </div>
+          <div className="flex-1 overflow-auto p-4">
+            {preview.type === "pdf" ? (
+              <iframe
+                src={preview.url}
+                title="Documento PDF"
+                className="h-full min-h-[80vh] w-full rounded border-0 bg-white"
+              />
+            ) : (
+              <img
+                src={preview.url}
+                alt="Documento"
+                className="mx-auto max-h-full max-w-full object-contain"
+              />
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

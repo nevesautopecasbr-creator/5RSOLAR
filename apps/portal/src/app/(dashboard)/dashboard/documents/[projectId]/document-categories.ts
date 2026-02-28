@@ -1,5 +1,16 @@
 import type { DocumentCategoryType } from "../actions";
 
+/** Ícones por categoria (identidade 5R – ícones consistentes por tipo de documento) */
+export const CATEGORY_ICONS: Record<DocumentCategoryType, string> = {
+  Contrato: "📄",
+  Proposta: "📋",
+  ART: "🏗️",
+  NF: "🧾",
+  Fotos: "📷",
+  Crédito: "⚡",
+  Contas: "💡",
+};
+
 export interface FolderItem {
   id: string;
   label: string;
@@ -18,9 +29,9 @@ export function getDocumentFolderTree(): FolderItem[] {
       children: [
         { id: "Contrato", label: "Contrato", category: "Contrato" },
         { id: "Proposta", label: "Proposta", category: "Proposta" },
-        { id: "ART", label: "ART/Alvará", category: "ART" },
-        { id: "NF", label: "NF", category: "NF" },
-        { id: "Fotos", label: "Fotos", category: "Fotos" },
+        { id: "ART", label: "ART / Alvará", category: "ART" },
+        { id: "NF", label: "NF da obra", category: "NF" },
+        { id: "Fotos", label: "Fotos da instalação", category: "Fotos" },
       ],
     },
     {
@@ -29,12 +40,12 @@ export function getDocumentFolderTree(): FolderItem[] {
       children: [
         {
           id: "Credito",
-          label: "Contrato de Crédito",
+          label: "Contrato de crédito",
           category: "Crédito",
         },
         {
           id: "Contas",
-          label: "Contas de Energia",
+          label: "Contas de energia",
           category: "Contas",
         },
       ],
