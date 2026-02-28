@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { createProjectFromLead } from "./actions";
 
 export default async function LeadsPage() {
   const supabase = await createClient();
@@ -88,12 +89,23 @@ export default async function LeadsPage() {
                       {lead.source === "monday" ? "Monday.com" : "Manual"}
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <Link
-                        href={`/dashboard/leads/${lead.id}`}
-                        className="inline-flex items-center rounded-lg border border-5r-dark-border bg-5r-dark px-3 py-1.5 text-sm font-medium text-white hover:bg-5r-orange/20 hover:border-5r-orange/50"
-                      >
-                        Ver
-                      </Link>
+                      <div className="flex items-center justify-end gap-2">
+                        <Link
+                          href={`/dashboard/leads/${lead.id}`}
+                          className="inline-flex items-center rounded-lg border border-5r-dark-border bg-5r-dark px-3 py-1.5 text-sm font-medium text-white hover:bg-5r-orange/20 hover:border-5r-orange/50"
+                        >
+                          Ver
+                        </Link>
+                        <form action={createProjectFromLead} className="inline">
+                          <input type="hidden" name="leadId" value={lead.id} />
+                          <button
+                            type="submit"
+                            className="inline-flex items-center rounded-lg bg-5r-orange px-3 py-1.5 text-sm font-medium text-white hover:bg-5r-orange-hover"
+                          >
+                            Criar projeto
+                          </button>
+                        </form>
+                      </div>
                     </td>
                   </tr>
                 ))}

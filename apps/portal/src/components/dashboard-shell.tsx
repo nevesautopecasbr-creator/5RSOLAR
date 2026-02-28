@@ -60,6 +60,14 @@ export function DashboardShell({
                 Documentos
               </Link>
             </li>
+            <li>
+              <Link
+                href="/dashboard/settings/templates"
+                className={`nav-item ${pathname?.startsWith("/dashboard/settings") ? "active" : ""}`}
+              >
+                Configurações
+              </Link>
+            </li>
           </ul>
         </nav>
         <div style={{ marginTop: "auto", paddingTop: 24 }}>
