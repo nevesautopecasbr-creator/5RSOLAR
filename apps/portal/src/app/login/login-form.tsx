@@ -39,11 +39,13 @@ export function LoginForm() {
   return (
     <form onSubmit={onSubmit}>
       <div className="form-group">
-        <label htmlFor="email">E-mail</label>
+        <label htmlFor="email" className="ui-label">
+          E-mail
+        </label>
         <input
           id="email"
           type="email"
-          className="input"
+          className="input ui-input"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -51,11 +53,13 @@ export function LoginForm() {
         />
       </div>
       <div className="form-group">
-        <label htmlFor="password">Senha</label>
+        <label htmlFor="password" className="ui-label">
+          Senha
+        </label>
         <input
           id="password"
           type="password"
-          className="input"
+          className="input ui-input"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
@@ -65,9 +69,8 @@ export function LoginForm() {
       {error && <p className="error-text">{error}</p>}
       <button
         type="submit"
-        className="button button-primary"
+        className="button button-primary ui-btn-primary w-full mt-4"
         disabled={loading}
-        style={{ marginTop: "16px" }}
       >
         {loading ? "Entrando..." : "Entrar"}
       </button>

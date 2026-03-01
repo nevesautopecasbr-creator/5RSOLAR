@@ -17,9 +17,9 @@ export default async function ProjectsPage() {
   };
 
   return (
-    <div className="rounded-xl border border-5r-dark-border bg-5r-dark-surface p-6">
-      <h1 className="text-xl font-semibold text-white">Projetos</h1>
-      <p className="mt-1 text-sm text-zinc-400">
+    <div className="ui-card">
+      <h1 className="ui-page-title">Projetos</h1>
+      <p className="ui-page-subtitle">
         Veja os projetos e acesse os documentos de cada um.
       </p>
 
@@ -28,16 +28,16 @@ export default async function ProjectsPage() {
           <table className="w-full min-w-[480px]">
             <thead>
               <tr className="border-b border-5r-dark-border bg-5r-dark">
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-zinc-400">
+                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-5r-text-muted">
                   Nome
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-zinc-400">
+                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-5r-text-muted">
                   Código
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-zinc-400">
+                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-5r-text-muted">
                   Status
                 </th>
-                <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-zinc-400">
+                <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-5r-text-muted">
                   Ações
                 </th>
               </tr>
@@ -51,7 +51,7 @@ export default async function ProjectsPage() {
                   <td className="px-4 py-3">
                     <span className="font-medium text-white">{p.name}</span>
                   </td>
-                  <td className="px-4 py-3 text-sm text-zinc-400">
+                  <td className="px-4 py-3 text-sm text-5r-text-muted">
                     {p.code || "—"}
                   </td>
                   <td className="px-4 py-3">
@@ -64,7 +64,7 @@ export default async function ProjectsPage() {
                   <td className="px-4 py-3 text-right">
                     <Link
                       href={`/dashboard/documents/${p.id}`}
-                      className="inline-flex items-center rounded-lg bg-5r-orange px-3 py-1.5 text-sm font-medium text-white hover:bg-5r-orange-hover"
+                      className="ui-btn-primary"
                     >
                       Ver documentos
                     </Link>
@@ -74,7 +74,7 @@ export default async function ProjectsPage() {
             </tbody>
           </table>
         ) : (
-          <div className="px-6 py-12 text-center text-zinc-500">
+          <div className="px-6 py-12 text-center text-5r-text-muted">
             Nenhum projeto encontrado. Crie um lead ou importe do Monday.com.
           </div>
         )}

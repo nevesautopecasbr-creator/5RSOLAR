@@ -39,7 +39,7 @@ export default async function DocumentManagerPage({
       <p className="mb-4">
         <Link
           href="/dashboard/documents"
-          className="text-sm text-zinc-400 hover:text-5r-orange"
+          className="text-sm text-5r-text-muted hover:text-5r-orange transition"
         >
           ← Voltar para projetos
         </Link>

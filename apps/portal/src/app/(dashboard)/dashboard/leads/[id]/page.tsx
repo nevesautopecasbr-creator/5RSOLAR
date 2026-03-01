@@ -28,110 +28,76 @@ export default async function LeadViewPage({
     : "—";
 
   return (
-    <div className="theme-5r">
-      <div className="lead-form-card" style={{ maxWidth: 640 }}>
-        <p style={{ marginBottom: 16 }}>
-          <Link
-            href="/dashboard/leads"
-            style={{ color: "var(--5r-text-soft)", fontSize: 14 }}
-          >
-            ← Voltar para leads
-          </Link>
-        </p>
-        <h1>Lead: {lead.name}</h1>
-        <p className="subtitle">Cadastrado em {createdAt}</p>
-
-        <dl
-          style={{
-            display: "grid",
-            gap: "12px 24px",
-            gridTemplateColumns: "auto 1fr",
-            margin: 0,
-          }}
+    <div className="ui-card max-w-2xl">
+      <p className="mb-4">
+        <Link
+          href="/dashboard/leads"
+          className="text-sm text-5r-text-muted hover:text-5r-text transition"
         >
-          <dt style={{ color: "var(--5r-text-soft)", fontWeight: 500 }}>
-            Origem
-          </dt>
-          <dd style={{ margin: 0, color: "var(--5r-text)" }}>
-            {lead.source === "manual" ? "Manual" : "Monday.com"}
-          </dd>
+          ← Voltar para leads
+        </Link>
+      </p>
+      <h1 className="ui-page-title">Lead: {lead.name}</h1>
+      <p className="ui-page-subtitle">Cadastrado em {createdAt}</p>
 
-          <dt style={{ color: "var(--5r-text-soft)", fontWeight: 500 }}>
-            Empresa
-          </dt>
-          <dd style={{ margin: 0, color: "var(--5r-text)" }}>
-            {lead.company || "—"}
-          </dd>
+      <dl className="grid gap-3 md:gap-x-6 grid-cols-[auto_1fr] m-0">
+        <dt className="text-5r-text-muted font-medium">Origem</dt>
+        <dd className="m-0 text-5r-text">
+          {lead.source === "manual" ? "Manual" : "Monday.com"}
+        </dd>
 
-          <dt style={{ color: "var(--5r-text-soft)", fontWeight: 500 }}>
-            E-mail
-          </dt>
-          <dd style={{ margin: 0, color: "var(--5r-text)" }}>
-            {lead.email ? (
-              <a
-                href={`mailto:${lead.email}`}
-                style={{ color: "var(--5r-orange)" }}
-              >
-                {lead.email}
-              </a>
-            ) : (
-              "—"
-            )}
-          </dd>
+        <dt className="text-5r-text-muted font-medium">Empresa</dt>
+        <dd className="m-0 text-5r-text">{lead.company || "—"}</dd>
 
-          <dt style={{ color: "var(--5r-text-soft)", fontWeight: 500 }}>
-            Telefone
-          </dt>
-          <dd style={{ margin: 0, color: "var(--5r-text)" }}>
-            {lead.phone ? (
-              <a
-                href={`tel:${lead.phone}`}
-                style={{ color: "var(--5r-orange)" }}
-              >
-                {lead.phone}
-              </a>
-            ) : (
-              "—"
-            )}
-          </dd>
-
-          <dt style={{ color: "var(--5r-text-soft)", fontWeight: 500 }}>
-            Responsável comercial
-          </dt>
-          <dd style={{ margin: 0, color: "var(--5r-text)" }}>
-            {lead.commercialResponsible || "—"}
-          </dd>
-
-          <dt style={{ color: "var(--5r-text-soft)", fontWeight: 500 }}>
-            Status
-          </dt>
-          <dd style={{ margin: 0, color: "var(--5r-text)" }}>{lead.status}</dd>
-
-          {lead.observations && (
-            <>
-              <dt
-                style={{
-                  color: "var(--5r-text-soft)",
-                  fontWeight: 500,
-                  gridColumn: 1,
-                }}
-              >
-                Observações
-              </dt>
-              <dd
-                style={{
-                  margin: 0,
-                  color: "var(--5r-text)",
-                  whiteSpace: "pre-wrap",
-                  gridColumn: 2,
-                }}
-              >
-                {lead.observations}
-              </dd>
-            </>
+        <dt className="text-5r-text-muted font-medium">E-mail</dt>
+        <dd className="m-0 text-5r-text">
+          {lead.email ? (
+            <a
+              href={`mailto:${lead.email}`}
+              className="text-5r-orange hover:underline"
+            >
+              {lead.email}
+            </a>
+          ) : (
+            "—"
           )}
-        </dl>
-      </div>
+        </dd>
+
+        <dt className="text-5r-text-muted font-medium">Telefone</dt>
+        <dd className="m-0 text-5r-text">
+          {lead.phone ? (
+            <a
+              href={`tel:${lead.phone}`}
+              className="text-5r-orange hover:underline"
+            >
+              {lead.phone}
+            </a>
+          ) : (
+            "—"
+          )}
+        </dd>
+
+        <dt className="text-5r-text-muted font-medium">
+          Responsável comercial
+        </dt>
+        <dd className="m-0 text-5r-text">
+          {lead.commercialResponsible || "—"}
+        </dd>
+
+        <dt className="text-5r-text-muted font-medium">Status</dt>
+        <dd className="m-0 text-5r-text">{lead.status}</dd>
+
+        {lead.observations && (
+          <>
+            <dt className="text-5r-text-muted font-medium col-start-1">
+              Observações
+            </dt>
+            <dd className="m-0 text-5r-text whitespace-pre-wrap col-start-2">
+              {lead.observations}
+            </dd>
+          </>
+        )}
+      </dl>
     </div>
   );
 }

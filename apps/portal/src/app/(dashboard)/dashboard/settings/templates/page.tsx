@@ -18,23 +18,27 @@ export default async function SettingsTemplatesPage() {
 
   return (
     <div className="mx-auto max-w-4xl">
-      <nav className="mb-6 flex items-center gap-2 text-sm text-zinc-400">
-        <Link href="/dashboard" className="hover:text-white">
+      <nav
+        className="mb-6 flex items-center gap-2 text-sm text-5r-text-muted"
+        aria-label="Breadcrumb"
+      >
+        <Link href="/dashboard" className="hover:text-5r-text transition">
           Dashboard
         </Link>
-        <span>/</span>
-        <Link href="/dashboard/settings/templates" className="hover:text-white">
+        <span aria-hidden>/</span>
+        <Link
+          href="/dashboard/settings/templates"
+          className="hover:text-5r-text transition"
+        >
           Configurações
         </Link>
-        <span>/</span>
-        <span className="text-white">Templates</span>
+        <span aria-hidden>/</span>
+        <span className="text-5r-text">Templates</span>
       </nav>
 
       <div className="mb-8">
-        <h1 className="text-xl font-semibold text-white">
-          Configurações &gt; Templates
-        </h1>
-        <p className="mt-1 text-sm text-zinc-400">
+        <h1 className="ui-page-title">Configurações &gt; Templates</h1>
+        <p className="ui-page-subtitle">
           Template de texto da proposta comercial. Use as variáveis abaixo; na
           geração do PDF elas serão substituídas pelos dados do projeto.
         </p>

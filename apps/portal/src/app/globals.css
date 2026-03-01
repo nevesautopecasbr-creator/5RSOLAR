@@ -1,36 +1,61 @@
 @import "tailwindcss";
 
+/* ==========================================================================
+   Módulo 05 — Identidade Visual 5R Energias Renováveis
+   Paleta: Laranja + Verde Lima (logo) + Escuro/Marinho
+   ========================================================================== */
+
 @theme {
+  /* Cores oficiais da marca (logo + diretrizes) */
   --color-5r-orange: #e85d04;
   --color-5r-orange-hover: #f48c06;
-  --color-5r-dark: #1a1a1a;
-  --color-5r-dark-surface: #252525;
-  --color-5r-dark-border: #3a3a3a;
   --color-5r-orange-soft: rgba(232, 93, 4, 0.12);
+  --color-5r-green: #84cc16;
+  --color-5r-green-soft: rgba(132, 204, 22, 0.15);
+  --color-5r-dark: #1a1a1a;
+  --color-5r-marine: #0f172a;
+  --color-5r-surface: #1e293b;
+  --color-5r-surface-elevated: #252525;
+  --color-5r-border: #334155;
+  --color-5r-border-soft: #3a3a3a;
+  --color-5r-text: #f8fafc;
+  --color-5r-text-muted: #94a3b8;
+  --color-5r-text-soft: #64748b;
+  /* Aliases para compatibilidade */
+  --color-5r-dark-surface: #252525;
+  --color-5r-dark-border: #334155;
 }
 
 :root {
-  --bg: #f5f7fb;
-  --surface: #ffffff;
-  --text: #0f172a;
-  --text-soft: #64748b;
-  --border: #e2e8f0;
-  --primary: #7c3aed;
-  --primary-soft: #ede9fe;
-  --danger: #b91c1c;
+  /* Sistema unificado 5R (todas as telas) */
+  --5r-bg: var(--color-5r-marine);
+  --5r-bg-main: #0f172a;
+  --5r-card: var(--color-5r-surface-elevated);
+  --5r-card-border: var(--color-5r-border);
+  --5r-primary: var(--color-5r-orange);
+  --5r-primary-hover: var(--color-5r-orange-hover);
+  --5r-accent: var(--color-5r-green);
+  --5r-text: var(--color-5r-text);
+  --5r-text-secondary: var(--color-5r-text-muted);
+  --5r-font-sans: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
 }
 
 * {
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 html,
 body {
   margin: 0;
   padding: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: "Segoe UI", Arial, sans-serif;
+  background: var(--5r-bg-main);
+  color: var(--5r-text);
+  font-family: var(--5r-font-sans);
+  -webkit-font-smoothing: antialiased;
 }
 
 a {
@@ -38,104 +63,205 @@ a {
   text-decoration: none;
 }
 
-.screen-center {
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: 24px;
-}
+/* ==========================================================================
+   Componentes semânticos (padrão único em todo o sistema)
+   ========================================================================== */
 
-.card {
-  background: var(--surface);
+/* Card padrão 5R — uso: .ui-card */
+.ui-card {
+  background: var(--5r-card);
+  border: 1px solid var(--5r-card-border);
   border-radius: 12px;
-  padding: 32px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  min-width: 320px;
-  max-width: 420px;
+  padding: 1.5rem;
 }
 
-.form-group {
-  margin-bottom: 20px;
+@media (min-width: 768px) {
+  .ui-card {
+    padding: 1.5rem 2rem;
+  }
 }
 
-.form-group label {
-  display: block;
-  font-size: 14px;
-  font-weight: 500;
-  margin-bottom: 6px;
-  color: var(--text);
-}
-
-.input {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  font-size: 15px;
-}
-
-.input:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 2px var(--primary-soft);
-}
-
-.button {
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-size: 15px;
+/* Título de página */
+.ui-page-title {
+  font-size: 1.25rem;
   font-weight: 600;
-  cursor: pointer;
-  border: none;
-  width: 100%;
+  color: var(--5r-text);
+  margin: 0 0 0.25rem 0;
 }
 
-.button-primary {
-  background: var(--primary);
+.ui-page-subtitle {
+  font-size: 0.875rem;
+  color: var(--5r-text-secondary);
+  margin: 0;
+}
+
+/* Botão primário (Laranja 5R) */
+.ui-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
   color: white;
+  background: var(--5r-primary);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
-.button-primary:hover:not(:disabled) {
-  filter: brightness(1.05);
+.ui-btn-primary:hover:not(:disabled) {
+  background: var(--5r-primary-hover);
 }
 
-.button-primary:disabled {
-  opacity: 0.7;
+.ui-btn-primary:disabled {
+  opacity: 0.6;
   cursor: not-allowed;
 }
 
-.error-text {
-  color: var(--danger);
-  font-size: 14px;
-  margin-top: 8px;
+/* Botão secundário (outline) */
+.ui-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--5r-text);
+  background: transparent;
+  border: 1px solid var(--5r-card-border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
 }
+
+.ui-btn-secondary:hover:not(:disabled) {
+  border-color: var(--5r-primary);
+  background: var(--color-5r-orange-soft);
+}
+
+/* Botão ghost (sidebar, links) */
+.ui-btn-ghost {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--5r-text-muted);
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  transition:
+    color 0.2s,
+    background 0.2s;
+}
+
+.ui-btn-ghost:hover {
+  color: var(--5r-text);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.ui-btn-ghost.active {
+  color: var(--5r-primary);
+  background: var(--color-5r-orange-soft);
+  font-weight: 600;
+}
+
+/* Input padrão 5R */
+.ui-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9375rem;
+  color: var(--5r-text);
+  background: var(--5r-dark);
+  border: 1px solid var(--5r-card-border);
+  border-radius: 8px;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.ui-input::placeholder {
+  color: var(--5r-text-soft);
+}
+
+.ui-input:focus {
+  outline: none;
+  border-color: var(--5r-primary);
+  box-shadow: 0 0 0 2px var(--color-5r-orange-soft);
+}
+
+.ui-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--5r-text-secondary);
+  margin-bottom: 0.375rem;
+}
+
+/* ==========================================================================
+   Layout raiz (sidebar + main)
+   ========================================================================== */
 
 .layout-root {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 250px 1fr;
+  grid-template-columns: 260px 1fr;
+  background: var(--5r-bg-main);
 }
 
+@media (max-width: 1023px) {
+  .layout-root {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Sidebar 5R */
 .sidebar {
-  border-right: 1px solid var(--border);
-  background: var(--surface);
-  padding: 24px 16px;
+  background: var(--5r-marine);
+  border-right: 1px solid var(--5r-card-border);
+  padding: 1.5rem 1rem;
   display: flex;
   flex-direction: column;
   min-height: 0;
   overflow-y: auto;
 }
 
+@media (max-width: 1023px) {
+  .sidebar {
+    border-right: none;
+    border-bottom: 1px solid var(--5r-card-border);
+    padding: 1rem;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .sidebar .nav-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
 .sidebar-title {
-  font-size: 22px;
+  font-size: 1.25rem;
   font-weight: 700;
-  margin-bottom: 20px;
+  color: var(--5r-text);
+  margin-bottom: 1.25rem;
 }
 
 .nav-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 2px;
   flex: 1;
   min-height: 0;
 }
@@ -143,82 +269,205 @@ a {
 .nav-item {
   display: block;
   border-radius: 8px;
-  padding: 10px 12px;
-  color: var(--text-soft);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--5r-text-muted);
   white-space: nowrap;
+  transition:
+    color 0.2s,
+    background 0.2s;
 }
 
 .nav-item:hover {
-  background: #f1f5f9;
+  color: var(--5r-text);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .nav-item.active {
-  background: var(--primary-soft);
-  color: var(--primary);
+  color: var(--5r-primary);
+  background: var(--color-5r-orange-soft);
   font-weight: 600;
 }
 
-/* 5R Energia Solar — identidade (laranja + escuro) */
+/* Main content */
+.layout-main {
+  padding: 1.5rem;
+  overflow: auto;
+  min-height: 100vh;
+}
+
+@media (min-width: 768px) {
+  .layout-main {
+    padding: 2rem;
+  }
+}
+
+/* ==========================================================================
+   Tela de login (full 5R)
+   ========================================================================== */
+
+.screen-center {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+  background: var(--5r-bg-main);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--5r-card);
+  border: 1px solid var(--5r-card-border);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+}
+
+.login-card .form-group {
+  margin-bottom: 1.25rem;
+}
+
+.login-card .form-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--5r-text-secondary);
+}
+
+.login-card .input {
+  background: var(--5r-dark);
+  border-color: var(--5r-card-border);
+  color: var(--5r-text);
+}
+
+.login-card .input:focus {
+  border-color: var(--5r-primary);
+  box-shadow: 0 0 0 2px var(--color-5r-orange-soft);
+}
+
+.login-card .button-primary {
+  background: var(--5r-primary);
+  color: white;
+  margin-top: 0.5rem;
+}
+
+.login-card .button-primary:hover:not(:disabled) {
+  background: var(--5r-primary-hover);
+}
+
+.error-text {
+  color: #f87171;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+/* ==========================================================================
+   Compatibilidade com classes Tailwind 5r-* (já usadas no código)
+   ========================================================================== */
+
 .theme-5r {
-  --5r-orange: #e85d04;
-  --5r-orange-hover: #f48c06;
-  --5r-orange-soft: rgba(232, 93, 4, 0.12);
-  --5r-dark: #1a1a1a;
-  --5r-dark-surface: #252525;
-  --5r-dark-border: #3a3a3a;
-  --5r-text: #f8f9fa;
-  --5r-text-soft: #adb5bd;
+  --5r-orange: var(--color-5r-orange);
+  --5r-orange-hover: var(--color-5r-orange-hover);
+  --5r-orange-soft: var(--color-5r-orange-soft);
+  --5r-dark: var(--color-5r-dark);
+  --5r-dark-surface: var(--color-5r-dark-surface);
+  --5r-dark-border: var(--color-5r-dark-border);
+  --5r-text: var(--color-5r-text);
+  --5r-text-soft: var(--color-5r-text-muted);
 }
 
 .lead-form-card {
-  background: var(--5r-dark-surface);
-  border: 1px solid var(--5r-dark-border);
+  background: var(--5r-card);
+  border: 1px solid var(--5r-card-border);
   border-radius: 12px;
-  padding: 32px;
+  padding: 2rem;
   max-width: 560px;
 }
 
 .lead-form-card h1 {
   color: var(--5r-text);
-  margin: 0 0 8px;
+  margin: 0 0 0.25rem 0;
   font-size: 1.5rem;
 }
 
 .lead-form-card .subtitle {
-  color: var(--5r-text-soft);
-  font-size: 14px;
-  margin-bottom: 24px;
+  color: var(--5r-text-secondary);
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
 }
 
 .lead-form-card .form-group label {
-  color: var(--5r-text-soft);
+  color: var(--5r-text-secondary);
 }
 
 .lead-form-card .input {
   background: var(--5r-dark);
-  border-color: var(--5r-dark-border);
+  border-color: var(--5r-card-border);
   color: var(--5r-text);
 }
 
-.lead-form-card .input::placeholder {
-  color: var(--5r-text-soft);
-  opacity: 0.8;
-}
-
 .lead-form-card .input:focus {
-  border-color: var(--5r-orange);
-  box-shadow: 0 0 0 2px var(--5r-orange-soft);
+  border-color: var(--5r-primary);
+  box-shadow: 0 0 0 2px var(--color-5r-orange-soft);
 }
 
 .lead-form-card .button-primary {
-  background: var(--5r-orange);
+  background: var(--5r-primary);
 }
 
 .lead-form-card .button-primary:hover:not(:disabled) {
-  background: var(--5r-orange-hover);
+  background: var(--5r-primary-hover);
 }
 
-.lead-form-card textarea.input {
-  min-height: 100px;
-  resize: vertical;
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.375rem;
+  color: var(--5r-text-secondary);
+}
+
+.input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  border: 1px solid var(--5r-card-border);
+}
+
+.button {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+}
+
+.button-primary {
+  background: var(--5r-primary);
+  color: white;
+  font-weight: 600;
+}
+
+.button-primary:hover:not(:disabled) {
+  background: var(--5r-primary-hover);
+}
+
+.button-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.card {
+  background: var(--5r-card);
+  border: 1px solid var(--5r-card-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  min-width: 0;
 }
