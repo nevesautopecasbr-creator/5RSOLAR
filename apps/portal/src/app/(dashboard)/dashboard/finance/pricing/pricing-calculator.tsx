@@ -3,10 +3,10 @@
 import { useState, useEffect } from "react";
 import {
   getProjectPricing,
-  calculatePrecoSugerido,
   saveProjectPricing,
   type PricingData,
 } from "./actions";
+import { calculatePrecoSugerido } from "./pricing-utils";
 
 const formatCurrency = (n: number) =>
   new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(
