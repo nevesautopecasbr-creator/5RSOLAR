@@ -158,21 +158,27 @@ export async function listTransactions(filters?: {
       .select("id, name")
       .in("id", projectIds);
     for (const p of projs ?? []) {
-      projectNames[(p as { id: string }).id] = (p as { name: string }).name;
+      const row = p as { id: string; name: string | null };
+      projectNames[row.id] = row.name ?? "";
     }
   }
 
-  const rows: TransactionRow[] = raw.map((r) => ({
-    id: r.id as string,
-    description: r.description as string,
-    type: r.type as TransactionType,
-    category: r.category as TransactionCategory,
-    amount: Number(r.amount),
-    date: r.date as string,
-    projectId: (r.projectId as string) || null,
-    status: r.status as TransactionStatus,
-    projectName: (r.projectId && projectNames[r.projectId as string]) || null,
-  }));
+  const rows: TransactionRow[] = raw.map((r) => {
+    const pid = (r.projectId as string) || null;
+    const projectName: string | null | undefined =
+      pid != null && projectNames[pid] !== undefined ? projectNames[pid] : null;
+    return {
+      id: r.id as string,
+      description: r.description as string,
+      type: r.type as TransactionType,
+      category: r.category as TransactionCategory,
+      amount: Number(r.amount),
+      date: r.date as string,
+      projectId: pid,
+      status: r.status as TransactionStatus,
+      projectName: projectName ?? null,
+    };
+  });
 
   return { data: rows };
 }
