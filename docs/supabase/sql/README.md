@@ -25,13 +25,14 @@ Estes arquivos criam o schema do banco (tabelas, enums, índices e FKs) compatí
 | 17    | `17-leads-table.sql`                        | Tabela Lead (origem monday/manual, status, commercial_responsible)                             |
 | 18    | `18-module03-document-management.sql`       | Módulo 03: bucket project-documents (políticas), Document (storage_path, category), RPC versão |
 | 19    | `19-proposal-template.sql`                  | Tabela ProposalTemplate (template de proposta comercial por empresa) + RLS                     |
+| 20    | `20-transactions-finance.sql`               | Módulo 06: tabela Transaction (fluxo de caixa) + RLS                                           |
 
 ## Como rodar no Supabase
 
 1. Abra o projeto no [Supabase Dashboard](https://supabase.com/dashboard).
 2. Vá em **SQL Editor** → **New query**.
 3. Copie o conteúdo de `01-init.sql`, cole na query e clique em **Run**.
-4. Repita para `02-refresh-tokens.sql`, depois `03-project-budget.sql`, e assim por diante até `19-proposal-template.sql`. **Antes da 18:** crie o bucket **project-documents** em Storage no dashboard.
+4. Repita para `02-refresh-tokens.sql`, depois `03-project-budget.sql`, e assim por diante até `20-transactions-finance.sql`. **Antes da 18:** crie o bucket **project-documents** em Storage no dashboard.
 
 **Importante:** use um banco **vazio** (projeto novo) ou um banco onde esse schema ainda não foi aplicado. Se já tiver rodado `prisma migrate deploy`, não precisa rodar estes scripts.
 

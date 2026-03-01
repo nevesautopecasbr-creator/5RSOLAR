@@ -23,11 +23,16 @@ export function DashboardShell({
     router.refresh();
   }
 
-  const navItems = [
+  const navItems: { href: string; label: string; activeWhen?: string }[] = [
     { href: "/dashboard", label: "Dashboard" },
     { href: "/dashboard/leads", label: "Leads" },
     { href: "/dashboard/projects", label: "Projetos" },
     { href: "/dashboard/documents", label: "Documentos" },
+    {
+      href: "/dashboard/finance/transactions",
+      label: "Financeiro",
+      activeWhen: "/dashboard/finance",
+    },
     { href: "/dashboard/settings/templates", label: "Configurações" },
   ];
 
@@ -41,13 +46,14 @@ export function DashboardShell({
         </div>
         <nav className="nav-list" aria-label="Menu principal">
           <ul className="list-none p-0 m-0">
-            {navItems.map(({ href, label }) => (
+            {navItems.map(({ href, label, activeWhen }) => (
               <li key={href}>
                 <Link
                   href={href}
                   className={`nav-item ${
                     (href === "/dashboard" && pathname === "/dashboard") ||
-                    (href !== "/dashboard" && pathname?.startsWith(href))
+                    (href !== "/dashboard" &&
+                      pathname?.startsWith(activeWhen ?? href))
                       ? "active"
                       : ""
                   }`}

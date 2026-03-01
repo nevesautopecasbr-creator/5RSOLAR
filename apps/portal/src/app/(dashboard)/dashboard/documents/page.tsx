@@ -11,11 +11,18 @@ export default async function DocumentsIndexPage() {
 
   return (
     <div className="ui-card">
-      <h1 className="ui-page-title">Gestão Documental</h1>
-      <p className="ui-page-subtitle">
-        Selecione um projeto (Cliente/Obra) para acessar as pastas e enviar
-        documentos.
-      </p>
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h1 className="ui-page-title">Gestão Documental</h1>
+          <p className="ui-page-subtitle">
+            Selecione um projeto (Cliente/Obra) para acessar as pastas e enviar
+            documentos.
+          </p>
+        </div>
+        <Link href="/dashboard/projects" className="ui-btn-primary">
+          Cadastrar projeto ou proposta
+        </Link>
+      </div>
       <ul className="mt-6 space-y-2">
         {projects?.length ? (
           projects.map((p) => (
@@ -33,7 +40,14 @@ export default async function DocumentsIndexPage() {
           ))
         ) : (
           <li className="rounded-lg border border-5r-dark-border bg-5r-dark px-4 py-6 text-center text-5r-text-muted">
-            Nenhum projeto encontrado. Crie um lead ou projeto primeiro.
+            Nenhum projeto encontrado.{" "}
+            <Link
+              href="/dashboard/projects"
+              className="text-5r-orange hover:underline"
+            >
+              Cadastre um projeto ou proposta
+            </Link>{" "}
+            ou crie a partir de um lead.
           </li>
         )}
       </ul>
